@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue Petite test</title>
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
+    <link rel="stylesheet" href="./src/main.css">
+</head>
+<body>
+    <div id="app" @vue:mounted="init()" v-scope>
+        <div class="container">
+            <h1>Vue Petite + PicoCSS todo</h1>
+            <div v-scope="TodoProgress({})">
+                <progress v-bind:value="progress" max="100"></progress>
+            </div>
+			<ul v-scope="ListTodos({})">
+                <div v-if="store.todos.length === 0">Start by adding a task</div>
+                <div v-else>
+                    <li v-for="(todo, index) in store.todos" v-bind:key="todo.id">
+                        <div class="grid" style="grid-template-columns: 65px auto;">
+                            <div style="padding-top: 1em;padding-left: 1em;">
+                                <input type="checkbox" role="switch" 
+                                v-model="todo.completed" 
+                                @change="updateTodo(index, todo)">
+                            </div>
+                            <label class="form-item">
+                                <input type="text" 
+                                    v-model="todo.content" 
+                                    @keyup="updateTodo(index, todo)">
+                                <button class="warning" @click="removeTodo(index)">Delete</button>
+                            </label>
+                        </div>
+                    </li>
+                </div>
+            </ul>
+            <div v-scope="AddTodo({})">
+                <label class="form-item">
+                    <input type="text" 
+                        v-model="newContent" 
+                        @keyup.enter="addTodo"
+                        placeholder="Create a task">
+                    <button @click="addTodo">Add</button>
+                </label>
+            </div>
+		</div>
+    </div>
+
+    <script src="https://unpkg.com/petite-vue"></script>
+	<script src="./src/index.js" type="module"></script>
+</body>
+</html>
